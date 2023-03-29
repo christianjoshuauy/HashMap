@@ -42,30 +42,84 @@ public:
   }
   void put(const string &key, int value)
   {
-    int index = compressHash(keyToHashCode(key, 5));
+    int idx = compressHash(keyToHashCode(key, 5));
+    if (index >= size)
+    {
+      cout << "HashMap is Full";
+    }
     // Linear probing
+    // for (int i = 0; i < size; i++)
+    // {
+    //   if (arr[idx] == -1)
+    //   {
+    //     arr[idx] = value;
+    //     break;
+    //   }
+    //   idx = (idx + 1) % size;
+    // }
+    // index++;
+
+    // Quadratic probing
+    // for (int i = 0; i < size; i++)
+    // {
+    //   if (arr[idx] == -1)
+    //   {
+    //     arr[idx] = value;
+    //     break;
+    //   }
+    //   idx = (idx + i * i) % size;
+    // }
+    // index++;
+
+    // Double hashing
+    int idx2 = compressHash(keyToHashCode(key, 7));
     for (int i = 0; i < size; i++)
     {
-      if (arr[index] == -1)
+      if (arr[idx] == -1)
       {
-        arr[index] = value;
+        arr[idx] = value;
         break;
       }
-      index = (index + 1) % size;
+      idx = (idx + idx2) % size;
     }
-    // Quadratic probing
+    index++;
   }
   int get(const string &key)
   {
     int index = compressHash(keyToHashCode(key, 5));
+    // TODO: handle colliding keys !important
+
     // Finding using linear probing
+    // for (int i = 0; i < size; i++)
+    // {
+    //   if (arr[index] != -1)
+    //   {
+    //     return arr[index];
+    //   }
+    //   index = (index + 1) % size;
+    // }
+    // return -1;
+
+    // Finding using quadratic probing
+    // for (int i = 0; i < size; i++)
+    // {
+    //   if (arr[index] != -1)
+    //   {
+    //     return arr[index];
+    //   }
+    //   index = (index + i * i) % size;
+    // }
+    // return -1;
+
+    // Finding using double hashing
+    int idx2 = compressHash(keyToHashCode(key, 7));
     for (int i = 0; i < size; i++)
     {
       if (arr[index] != -1)
       {
         return arr[index];
       }
-      index = (index + 1) % size;
+      index = (index + idx2) % size;
     }
     return -1;
   }
