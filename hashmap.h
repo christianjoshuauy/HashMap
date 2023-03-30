@@ -6,6 +6,7 @@ class HashMap
 {
 private:
   int *arr;
+  unsigned int *hashes;
   int size;
   int index;
   unsigned int keyToHashCode(const string &key, int shift)
@@ -33,6 +34,7 @@ public:
   {
     size = 10;
     arr = new int[size];
+    hashes = new unsigned int[size];
     index = 0;
     // Initialize array with -1
     for (int i = 0; i < size; i++)
@@ -42,7 +44,8 @@ public:
   }
   void put(const string &key, int value)
   {
-    int idx = compressHash(keyToHashCode(key, 5));
+    unsigned int hash = keyToHashCode(key, 5);
+    int idx = compressHash(hash);
     if (index >= size)
     {
       cout << "HashMap is Full";
@@ -53,6 +56,7 @@ public:
     //   if (arr[idx] == -1)
     //   {
     //     arr[idx] = value;
+    //     hashes[idx] = hash;
     //     break;
     //   }
     //   idx = (idx + 1) % size;
@@ -65,6 +69,7 @@ public:
     //   if (arr[idx] == -1)
     //   {
     //     arr[idx] = value;
+    //     hashes[idx] = hash;
     //     break;
     //   }
     //   idx = (idx + i * i) % size;
@@ -78,36 +83,37 @@ public:
       if (arr[idx] == -1)
       {
         arr[idx] = value;
+        hashes[idx] = hash;
         break;
       }
-      idx = (idx + idx2) % size;
+      idx = (idx + i * idx2) % size;
     }
     index++;
   }
   int get(const string &key)
   {
-    int index = compressHash(keyToHashCode(key, 5));
-    // TODO: handle colliding keys !important
+    unsigned int hash = keyToHashCode(key, 5);
+    int idx = compressHash(hash);
 
     // Finding using linear probing
     // for (int i = 0; i < size; i++)
     // {
-    //   if (arr[index] != -1)
+    //   if (arr[idx] != -1 && hashes[idx] == hash)
     //   {
-    //     return arr[index];
+    //     return arr[idx];
     //   }
-    //   index = (index + 1) % size;
+    //   idx = (idx + 1) % size;
     // }
     // return -1;
 
     // Finding using quadratic probing
     // for (int i = 0; i < size; i++)
     // {
-    //   if (arr[index] != -1)
+    //   if (arr[idx] != -1 && hashes[idx] == hash)
     //   {
-    //     return arr[index];
+    //     return arr[idx];
     //   }
-    //   index = (index + i * i) % size;
+    //   idx = (idx + i * i) % size;
     // }
     // return -1;
 
@@ -115,11 +121,11 @@ public:
     int idx2 = compressHash(keyToHashCode(key, 7));
     for (int i = 0; i < size; i++)
     {
-      if (arr[index] != -1)
+      if (arr[idx] != -1 && hashes[idx] == hash)
       {
-        return arr[index];
+        return arr[idx];
       }
-      index = (index + idx2) % size;
+      idx = (idx + i * idx2) % size;
     }
     return -1;
   }
