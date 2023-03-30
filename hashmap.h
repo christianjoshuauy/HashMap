@@ -29,6 +29,14 @@ private:
     return (a * hash + b) % p % size;
   }
 
+  int compressHash(int hash)
+  {
+    // compress the hash code using MAD compression
+    int p = 541;      // prime number
+    int a = 5, b = 7; // random numbers
+    return (a * hash + b) % p % size;
+  }
+
 public:
   HashMap()
   {
@@ -42,6 +50,7 @@ public:
       arr[i] = -1;
     }
   }
+
   void put(const string &key, int value)
   {
     unsigned int hash = keyToHashCode(key, 5);
@@ -90,6 +99,29 @@ public:
     }
     index++;
   }
+
+  void put(int key, int value)
+  {
+    // Overload for int keys
+    int idx = compressHash(key);
+    if (index >= size)
+    {
+      cout << "HashMap is Full";
+    }
+    // Linear probing
+    for (int i = 0; i < size; i++)
+    {
+      if (arr[idx] == -1)
+      {
+        arr[idx] = value;
+        hashes[idx] = key;
+        break;
+      }
+      idx = (idx + 1) % size;
+    }
+    index++;
+  }
+
   int get(const string &key)
   {
     unsigned int hash = keyToHashCode(key, 5);
@@ -126,6 +158,23 @@ public:
         return arr[idx];
       }
       idx = (idx + i * idx2) % size;
+    }
+    return -1;
+  }
+
+  int get(int key)
+  {
+    // Overload for int keys
+    int idx = compressHash(key);
+
+    // Finding using linear probing
+    for (int i = 0; i < size; i++)
+    {
+      if (arr[idx] != -1 && hashes[idx] == key)
+      {
+        return arr[idx];
+      }
+      idx = (idx + 1) % size;
     }
     return -1;
   }

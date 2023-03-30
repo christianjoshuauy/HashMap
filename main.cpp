@@ -9,8 +9,9 @@ int main(void)
   hashMap->put("apple", 5);
   hashMap->put("grape", 10);
   hashMap->put("fork", 16);
-  hashMap->put("round", 1);   // collision
-  hashMap->put("jungle", 39); // collision
+  hashMap->put("round", 1);
+  hashMap->put("jungle", 39);
   hashMap->put("road", 69);
-  cout << hashMap->get("apple") << endl;
+  hashMap->put(5, 65);
+  cout << hashMap->get(5) << endl;
 }
