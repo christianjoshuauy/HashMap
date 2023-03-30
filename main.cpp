@@ -12,6 +12,8 @@ int main(void)
   hashMap->put("round", 1);
   hashMap->put("jungle", 39);
   hashMap->put("road", 69);
-  hashMap->put(5, 65);
-  cout << hashMap->get(5) << endl;
+  cout << hashMap->get("jungle") << endl;
+  // Linear Probing [-1,-1,-1,69,10,5,1,16,39,-1]
+  // Quadratic Probing [-1,39,-1,69,10,5,1,16,-1,-1]
+  // Double hash [39,-1,-1,69,10,5,1,16,-1,-1]
 }

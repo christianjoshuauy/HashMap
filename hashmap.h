@@ -73,20 +73,6 @@ public:
     // index++;
 
     // Quadratic probing
-    // for (int i = 0; i < size; i++)
-    // {
-    //   if (arr[idx] == -1)
-    //   {
-    //     arr[idx] = value;
-    //     hashes[idx] = hash;
-    //     break;
-    //   }
-    //   idx = (idx + i * i) % size;
-    // }
-    // index++;
-
-    // Double hashing
-    int idx2 = compressHash(keyToHashCode(key, 7));
     for (int i = 0; i < size; i++)
     {
       if (arr[idx] == -1)
@@ -95,9 +81,23 @@ public:
         hashes[idx] = hash;
         break;
       }
-      idx = (idx + i * idx2) % size;
+      idx = (idx + i * i) % size;
     }
     index++;
+
+    // Double hashing
+    // int idx2 = compressHash(keyToHashCode(key, 7));
+    // for (int i = 0; i < size; i++)
+    // {
+    //   if (arr[idx] == -1)
+    //   {
+    //     arr[idx] = value;
+    //     hashes[idx] = hash;
+    //     break;
+    //   }
+    //   idx = (idx + i * idx2) % size;
+    // }
+    // index++;
   }
 
   void put(int key, int value)
@@ -139,27 +139,27 @@ public:
     // return -1;
 
     // Finding using quadratic probing
-    // for (int i = 0; i < size; i++)
-    // {
-    //   if (arr[idx] != -1 && hashes[idx] == hash)
-    //   {
-    //     return arr[idx];
-    //   }
-    //   idx = (idx + i * i) % size;
-    // }
-    // return -1;
-
-    // Finding using double hashing
-    int idx2 = compressHash(keyToHashCode(key, 7));
     for (int i = 0; i < size; i++)
     {
       if (arr[idx] != -1 && hashes[idx] == hash)
       {
         return arr[idx];
       }
-      idx = (idx + i * idx2) % size;
+      idx = (idx + i * i) % size;
     }
     return -1;
+
+    // Finding using double hashing
+    // int idx2 = compressHash(keyToHashCode(key, 7));
+    // for (int i = 0; i < size; i++)
+    // {
+    //   if (arr[idx] != -1 && hashes[idx] == hash)
+    //   {
+    //     return arr[idx];
+    //   }
+    //   idx = (idx + i * idx2) % size;
+    // }
+    // return -1;
   }
 
   int get(int key)
@@ -177,5 +177,20 @@ public:
       idx = (idx + 1) % size;
     }
     return -1;
+  }
+
+  void print()
+  {
+    // Prints the HashMap
+    cout << "[";
+    for (int i = 0; i < size; i++)
+    {
+      cout << arr[i];
+      if (i != size - 1)
+      {
+        cout << ",";
+      }
+    }
+    cout << "]" << endl;
   }
 };
